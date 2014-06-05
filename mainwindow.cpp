@@ -64,6 +64,12 @@ void MainWindow::on_actionOpen_triggered()
             }
         }
         ui->tableView->resizeColumnsToContents();
+
+        QStringList fileNameList = fileName.split("/");
+        int fileNameListNum = fileNameList.length();
+        QString newName;
+        newName = "CSViewer | " + fileNameList[fileNameListNum-1];
+        this->setWindowTitle(newName);
         file.close();
     }
 }
