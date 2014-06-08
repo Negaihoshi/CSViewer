@@ -7,6 +7,8 @@
 #include "QTextStream"
 #include "QStandardItemModel"
 #include "QTableWidget"
+#include <QtXml>
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -77,7 +79,7 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QString(),
-            tr("Text Files (*.txt);;C++ Files (*.cpp *.h)"));
+            tr("CSV Files (*.csv);;JSON Files (*.json)"));
 
     if (!fileName.isEmpty()) {
         QFile file(fileName);
@@ -87,6 +89,28 @@ void MainWindow::on_actionSave_triggered()
             QTextStream stream(&file);
             file.close();
         }
+    }
+    // Create a document to write XML
+    QDomDocument document;
+
+    // Making the root element
+    QDomElement root = document.createElement("Dorms");
+
+    // Adding the root element to the docuemnt
+    document.appendChild(root);
+
+    // Writing to a file
+    QFile file("Test/myXLM.xml");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Open the file for writing failed";
+    }
+    else
+    {
+        QTextStream stream(&file);
+        stream << document.toString();
+        file.close();
+        qDebug() << "Writing is done";
     }
 }
 
