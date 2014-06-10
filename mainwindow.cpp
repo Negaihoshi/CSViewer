@@ -10,6 +10,8 @@
 #include <QtXml>
 
 using namespace std;
+QStandardItemModel *model = new QStandardItemModel();
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,8 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QStandardItemModel *model = new QStandardItemModel();
-    ui->tableView->setModel(model);
+
 }
 
 MainWindow::~MainWindow()
@@ -68,7 +69,10 @@ void MainWindow::on_actionOpen_triggered()
                 model->setItem(count2-1,count,firstRow);
             }
         }
+        //Resizes all columns based on the size hints of the delegate used to render each item in the columns.
         ui->tableView->resizeColumnsToContents();
+        //Set Visible
+        ui->tableView->verticalHeader()->setVisible(false);
 
         QStringList fileNameList = fileName.split("/");
         int fileNameListNum = fileNameList.length();
@@ -76,7 +80,6 @@ void MainWindow::on_actionOpen_triggered()
         newName = "CSViewer | " + fileNameList[fileNameListNum-1];
         this->setWindowTitle(newName);
         file.close();
-        model->item(1,1);
     }
 }
 
@@ -93,7 +96,12 @@ void MainWindow::on_actionSave_triggered()
             // error message
         } else {
             QTextStream stream(&file);
-            stream << model->data(model->index(0,0));
+            QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->tableView->model());
+            //model->data(model->index(0,0));
+            stream << model->data(model->index(1,1)).toString();
+            //stream << model->item(1,1).toString();
+
+            //stream << ui->tableView->model()->data(model->index(1, 1));
             //stream << ui->tableView->model()->data();
             file.close();
         }
