@@ -16,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QStandardItemModel *model = new QStandardItemModel();
+    ui->tableView->setModel(model);
 }
 
 MainWindow::~MainWindow()
@@ -73,8 +76,11 @@ void MainWindow::on_actionOpen_triggered()
         newName = "CSViewer | " + fileNameList[fileNameListNum-1];
         this->setWindowTitle(newName);
         file.close();
+        model->item(1,1);
     }
 }
+
+
 
 void MainWindow::on_actionSave_triggered()
 {
@@ -87,9 +93,12 @@ void MainWindow::on_actionSave_triggered()
             // error message
         } else {
             QTextStream stream(&file);
+            stream << model->data(model->index(0,0));
+            //stream << ui->tableView->model()->data();
             file.close();
         }
     }
+    /* Todo XML Export
     // Create a document to write XML
     QDomDocument document;
 
@@ -112,5 +121,6 @@ void MainWindow::on_actionSave_triggered()
         file.close();
         qDebug() << "Writing is done";
     }
+    */
 }
 
