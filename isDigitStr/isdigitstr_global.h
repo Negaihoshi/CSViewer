@@ -1,0 +1,12 @@
+#ifndef ISDIGITSTR_GLOBAL_H
+#define ISDIGITSTR_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(ISDIGITSTR_LIBRARY)
+#  define ISDIGITSTRSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define ISDIGITSTRSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // ISDIGITSTR_GLOBAL_H
